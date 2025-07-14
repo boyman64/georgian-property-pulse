@@ -15,8 +15,8 @@ interface PropertySearchProps {
 
 export function PropertySearch({ onPropertySelect, showResults = true }: PropertySearchProps) {
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedCity, setSelectedCity] = useState('')
-  const [selectedType, setSelectedType] = useState('')
+  const [selectedCity, setSelectedCity] = useState('all')
+  const [selectedType, setSelectedType] = useState('all')
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
 
   const cities = [...new Set(mockProperties.map(p => p.city))]
@@ -33,11 +33,11 @@ export function PropertySearch({ onPropertySelect, showResults = true }: Propert
       )
     }
 
-    if (selectedCity) {
+    if (selectedCity && selectedCity !== 'all') {
       filtered = filtered.filter(p => p.city === selectedCity)
     }
 
-    if (selectedType) {
+    if (selectedType && selectedType !== 'all') {
       filtered = filtered.filter(p => p.type === selectedType)
     }
 
@@ -82,7 +82,7 @@ export function PropertySearch({ onPropertySelect, showResults = true }: Propert
                 <SelectValue placeholder="Select City" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Cities</SelectItem>
+                <SelectItem value="all">All Cities</SelectItem>
                 {cities.map(city => (
                   <SelectItem key={city} value={city}>{city}</SelectItem>
                 ))}
@@ -94,7 +94,7 @@ export function PropertySearch({ onPropertySelect, showResults = true }: Propert
                 <SelectValue placeholder="Property Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Types</SelectItem>
+                <SelectItem value="all">All Types</SelectItem>
                 {propertyTypes.map(type => (
                   <SelectItem key={type} value={type}>
                     {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -114,8 +114,8 @@ export function PropertySearch({ onPropertySelect, showResults = true }: Propert
               variant="outline" 
               onClick={() => {
                 setSearchTerm('')
-                setSelectedCity('')
-                setSelectedType('')
+                setSelectedCity('all')
+                setSelectedType('all')
                 setFilteredProperties([])
               }}
             >
