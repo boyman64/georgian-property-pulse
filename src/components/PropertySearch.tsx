@@ -19,8 +19,11 @@ export function PropertySearch({ onPropertySelect, showResults = true }: Propert
   const [selectedType, setSelectedType] = useState('all')
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([])
 
-  const cities = [...new Set(mockProperties.map(p => p.city))]
-  const propertyTypes = [...new Set(mockProperties.map(p => p.type))]
+  const cities = [...new Set(mockProperties.map(p => p.city))].filter(city => city && city.trim() !== '')
+  const propertyTypes = [...new Set(mockProperties.map(p => p.type))].filter(type => type && type.trim() !== '')
+  
+  console.log('PropertySearch cities:', cities)
+  console.log('PropertySearch propertyTypes:', propertyTypes)
 
   const handleSearch = () => {
     let filtered = mockProperties
@@ -83,9 +86,12 @@ export function PropertySearch({ onPropertySelect, showResults = true }: Propert
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Cities</SelectItem>
-                {cities.map(city => (
-                  <SelectItem key={city} value={city}>{city}</SelectItem>
-                ))}
+                {cities.map(city => {
+                  console.log('PropertySearch city value:', city, typeof city, city === '')
+                  return (
+                    <SelectItem key={city} value={city}>{city}</SelectItem>
+                  )
+                })}
               </SelectContent>
             </Select>
 
